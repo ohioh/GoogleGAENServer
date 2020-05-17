@@ -1,3 +1,37 @@
+Infomration by Tjark @all:
+
+Google open-sourced its Exposure Notification reference server (https://github.com/google/exposure-notifications-server), h/t @richard.taylor. It’s responsible for the following functions:
+• Accepting the temporary exposure keys of affected users from mobile devices.
+• Validating the temporary exposure keys using the device attestation API.
+• Storing the temporary exposure keys in a database.
+• Periodically generating incremental files that will be downloaded by mobile devices to perform the key matching algorithm on the mobile device.
+• Sending a public key to devices, and digitally signing the incremental files with a private key.
+• Periodically deleting old temporary exposure keys. After 14 days, or configured time period, the exposure keys can no longer be matched to a device.
+What this means for us; other observations:
+• To speed up our time to market and use security/scaling best-practices, we can use it as is.
+• Interoperability is handled using a federation model where servers sync the temporary exposure keys between each other periodically. (This means a US server might contain temporary exposure keys from an MX server if the former is set up that way).
+• Deployment of services can be made on the Google Cloud Platform entirely.
+• Verification of published temporary exposure keys is done once when the mobile device uploads them to the publish service. Alongside region, and SafetyNet / DeviceCheck verification, there are hints that the service can be modified to verify the verificationPayload received from the verification authority (PHA), which is also attached to the report.
+• If verification was successful then the keys will be published and made available for apps to download. During server federation sync, servers will receive a VerificationAuthorityName that did the verification but not the verificationPayload.
+I’ve been discussing with @Madhava and @Josh (California) how we can use it, and we’re interested to read your ideas.
+23:28 Uhr
+did you see this in the TCN slack
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
 # Exposure Notification Reference Server
 
 [https://www.google.com/covid19/exposurenotifications/](https://www.google.com/covid19/exposurenotifications/)
